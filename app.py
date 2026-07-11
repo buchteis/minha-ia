@@ -9,14 +9,14 @@ try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=GOOGLE_API_KEY)
     
-    # Mudança para o modelo estável que resolve o erro de versão da API
+    # Alterado para o nome clássico aceito em qualquer versão da biblioteca
     model = genai.GenerativeModel(
-        "gemini-1.5-pro",
+        "gemini-pro",
         system_instruction=(
             "Você é um assistente com uma personalidade única: sabe ser brincalhão, "
             "espirituoso e usar um toque de humor, mas é extremamente sério, direto, "
             "focado e objetivo ao responder às dúvidas do usuário. Evite enrolação e "
-            "vá direto ao ponto com respostas claras, mas mantém um tom amigável e leve."
+            "vá direto ao ponto com respostas claras, mas mantenha um tom amigável e leve."
         )
     )
 except Exception as e:
