@@ -9,8 +9,16 @@ try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=GOOGLE_API_KEY)
     
-    # Tentando usar o modelo padrão
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    # Configurado exatamente com o modelo ativo na sua lista
+    model = genai.GenerativeModel(
+        "gemini-3.5-flash",
+        system_instruction=(
+            "Você é um assistente com uma personalidade única: sabe ser brincalhão, "
+            "espirituoso e usar um toque de humor, mas é extremamente sério, direto, "
+            "focado e objetivo ao responder às dúvidas do usuário. Evite enrolação e "
+            "vá direto ao ponto com respostas claras, mas mantenha um tom amigável e leve."
+        )
+    )
 except Exception as e:
     st.error("Por favor, configure sua GOOGLE_API_KEY nos Secrets do Streamlit.")
     st.stop()
@@ -35,10 +43,4 @@ if prompt := st.chat_input("Digite sua pergunta aqui..."):
             message_placeholder.markdown(full_response)
             st.session_state.messages.append({"role": "assistant", "content": full_response})
         except Exception as e:
-            # SE DER ERRO: O código vai listar os modelos disponíveis na tela!
-            try:
-                available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-                models_text = "\n".join([f"- `{m}`" for m in available_models])
-                st.error(f"Erro ao processar. Modelos disponíveis na sua conta:\n\n{models_text}")
-            except Exception as list_error:
-                st.error(f"Erro crítico: {e}. Não foi possível listar os modelos: {list_error}")
+            st.error(f"Erro ao processar: {e}")
