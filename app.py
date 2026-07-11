@@ -1,37 +1,40 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Configuração da página web
 st.set_page_config(page_title="Minha IA Conectada", page_icon="🤖")
 st.title("🤖 Minha Primeira IA")
 st.write("Conectada e pronta para responder!")
 
-# Conexão com a inteligência do Gemini usando a chave segura do painel
 try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=GOOGLE_API_KEY)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    
+    # Aqui definimos o comportamento equilibrado: brincalhona, mas séria e objetiva
+    model = genai.GenerativeModel(
+        "gemini-1.5-flash",
+        system_instruction=(
+            "Você é um assistente com uma personalidade única: sabe ser brincalhão, "
+            "espirituoso e usar um toque de humor, mas é extremamente sério, direto, "
+            "focado e objetivo ao responder às dúvidas do usuário. Evite enrolação e "
+            "vá direto ao ponto com respostas claras, mas mantenha um tom amigável e leve."
+        )
+    )
 except Exception as e:
     st.error("Por favor, configure sua GOOGLE_API_KEY nos Secrets do Streamlit.")
     st.stop()
 
-# Inicializa o histórico do chat na tela
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Exibe mensagens anteriores
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Campo de entrada do usuário
 if prompt := st.chat_input("Digite sua pergunta aqui..."):
-    # Mostra a pergunta do usuário
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Gera e mostra a resposta da IA
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         try:
