@@ -9,9 +9,9 @@ try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=GOOGLE_API_KEY)
     
-    # Aqui definimos o comportamento equilibrado: brincalhona, mas séria e objetiva
+    # Atualizado para gemini-2.5-flash para corrigir o erro 404
     model = genai.GenerativeModel(
-        "gemini-1.5-flash",
+        "gemini-2.5-flash",
         system_instruction=(
             "Você é um assistente com uma personalidade única: sabe ser brincalhão, "
             "espirituoso e usar um toque de humor, mas é extremamente sério, direto, "
@@ -44,3 +44,4 @@ if prompt := st.chat_input("Digite sua pergunta aqui..."):
             st.session_state.messages.append({"role": "assistant", "content": full_response})
         except Exception as e:
             st.error(f"Erro ao processar: {e}")
+            
