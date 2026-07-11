@@ -9,14 +9,14 @@ try:
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=GOOGLE_API_KEY)
     
-    # Atualizado para o modelo definitivo que aceita novos usuários
+    # Mudança para o modelo estável que resolve o erro de versão da API
     model = genai.GenerativeModel(
-        "gemini-2.5-flash-latest",
+        "gemini-1.5-pro",
         system_instruction=(
             "Você é um assistente com uma personalidade única: sabe ser brincalhão, "
             "espirituoso e usar um toque de humor, mas é extremamente sério, direto, "
             "focado e objetivo ao responder às dúvidas do usuário. Evite enrolação e "
-            "vá direto ao ponto com respostas claras, mas mantenha um tom amigável e leve."
+            "vá direto ao ponto com respostas claras, mas mantém um tom amigável e leve."
         )
     )
 except Exception as e:
@@ -44,3 +44,4 @@ if prompt := st.chat_input("Digite sua pergunta aqui..."):
             st.session_state.messages.append({"role": "assistant", "content": full_response})
         except Exception as e:
             st.error(f"Erro ao processar: {e}")
+            
