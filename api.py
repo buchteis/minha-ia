@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import os
 import google.generativeai as genai
 from supabase import create_client
+import re
 
 app = FastAPI()
 
@@ -14,7 +15,7 @@ supabase = create_client(
     os.getenv("SUPABASE_KEY")
 )
 
-# Modelo da IA
+# Modelo da IA para interpretar perguntas
 model = genai.GenerativeModel(
     "gemini-3.5-flash",
     system_instruction="""
