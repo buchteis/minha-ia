@@ -105,3 +105,4 @@ async def chat(dados: Pergunta):
                 return {"resposta": f"🤖 {resposta.text}"}
             except:
                 return {"resposta": "⚠️ Não consegui buscar informações no momento. Tente novamente."}
+Update api.py - ativa busca na web com Grounding
